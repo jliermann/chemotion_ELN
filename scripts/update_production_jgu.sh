@@ -2,6 +2,8 @@
 
 ## This is a script to update a production chemotion_ELN server
 
+## Version for installation at JGU Mainz. Execute with sudo from /home/production/
+
 export no_proxy=localhost,0.0.0.0,127.0.0.1,127.0.1.1,127.0.0.0/8,::1,10.0.0.0/8,fd42:4323:8cdd::/48,134.93.0.0/16,2001:4c80:40::/48,zdv.uni-mainz.de,uni-mainz.de,zdv.net,rlp.net
 export https_proxy=http://webproxy.zdv.uni-mainz.de:3128
 export HTTPS_PROXY=http://webproxy.zdv.uni-mainz.de:3128
@@ -200,11 +202,11 @@ description="installing rvm and ruby $RUBY_VERSION"
 
 if [ "${PART_4:-}" ]; then
   sharpi "$description"
-  if sudo -EH -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
-    green 'gpg key installed'
-  else
-    sudo -EH -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
-  fi
+  # if sudo -EH -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
+  #   green 'gpg key installed'
+  # else
+  #   sudo -EH -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+  # fi
   sudo -EH -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
   sudo -EH -u $PROD bash -c "source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
 
