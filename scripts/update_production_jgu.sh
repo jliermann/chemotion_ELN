@@ -11,6 +11,8 @@ export HTTP_PROXY=http://webproxy.zdv.uni-mainz.de:3128
 export http_proxy=http://webproxy.zdv.uni-mainz.de:3128
 export ALL_PROXY=http://webproxy.zdv.uni-mainz.de:3128
 
+export THOR_SILENCE_DEPRECATION=true
+
 set -euo pipefail
 
 ############################################
