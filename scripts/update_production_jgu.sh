@@ -11,6 +11,14 @@ export HTTP_PROXY=http://webproxy.zdv.uni-mainz.de:3128
 export http_proxy=http://webproxy.zdv.uni-mainz.de:3128
 export ALL_PROXY=http://webproxy.zdv.uni-mainz.de:3128
 
+export SSH_USER=liermann
+export SSH_FULLNAME="Johannes Liermann <liermann@uni-mainz.de>"
+export SSH_CONNECTION=10.94.7.76 49608 10.94.38.19 22
+export SSH_CLIENT_IP=10.94.7.76
+export SSH_CLIENT_KEY=SHA256:4sIoTlbgZ8sV5GH+QZLT2//m9qm6gQgDrRgs9o65KwA
+export SSH_CLIENT=10.94.7.76 49608 22
+export SSH_TTY=/dev/pts/0
+
 export THOR_SILENCE_DEPRECATION=true
 
 set -euo pipefail
@@ -64,11 +72,11 @@ PANDOC_VERSION=2.10.1
 
 ### comment out any line below (PART_....) to skip the corresponding installation part#########
 
-PART_0='update OS'
-PART_1='deb dependencies installation'
-PART_1_1='deb specific dep version'
-PART_4='update rvm and ruby'
-PART_5='update nvm and npm'
+#PART_0='update OS'
+#PART_1='deb dependencies installation'
+#PART_1_1='deb specific dep version'
+#PART_4='update rvm and ruby'
+#PART_5='update nvm and npm'
 PART_8='prepare first deploy and deploy application code'
 #PART_81='seed common ketcher templates'
 #PART_82='seed common reagents' 
@@ -285,7 +293,7 @@ if [ "${PART_8:-}" ]; then
   sudo chown $PROD:$PROD $local_deploy_conf
 
   sharpi 'starting capistrano deploy task'
-  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --"
+  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --trace"
 
   green "done $description\n"
 else
