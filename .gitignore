@@ -168,3 +168,5 @@ vendor/bundle/*
 vendor/cache/*
 .idea/*
 .devcontainer
+
+jgu_env.txt

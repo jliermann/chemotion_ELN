@@ -4,13 +4,14 @@
 
 keywords=("SSH" "http" "HTTP")
 loops=${#keywords[@]}
+filename="jgu_env.txt"
 
 # Determine number of env for each keyword
 
 for (( i=0; i<$loops; i++ )); do
-    echo ${keywords[i]}
+    # echo ${keywords[i]}
     length[i]=$(env | grep ${keywords[i]} | wc -l)
-    echo ${length[i]}
+    # echo ${length[i]}
 done
 
 # Assemble export statements
@@ -18,7 +19,7 @@ done
 for (( i=0; i<$loops; i++ )); do
     for (( j=0; j<${length[i]}; j++)); do
         envvar=$(env | grep ${keywords[i]} | sed -n "$(expr $j + 1) p")
-        echo "EXPORT $envvar"
+        echo "EXPORT $envvar" >> $filename
     done
     # echo ${keywords[i]}
     # length[i]=$(env | grep ${keywords[i]} | wc -l)
