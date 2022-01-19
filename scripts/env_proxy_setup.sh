@@ -4,7 +4,7 @@
 
 keywords=("SSH" "http" "HTTP")
 loops=${#keywords[@]}
-filename="jgu_env.txt"
+filename="/home/production/jgu_env.txt"
 
 # Determine number of env for each keyword
 

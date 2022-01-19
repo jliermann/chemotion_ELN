@@ -4,20 +4,7 @@
 
 ## Version for installation at JGU Mainz. Execute with sudo from /home/production/
 
-export no_proxy=localhost,0.0.0.0,127.0.0.1,127.0.1.1,127.0.0.0/8,::1,10.0.0.0/8,fd42:4323:8cdd::/48,134.93.0.0/16,2001:4c80:40::/48,zdv.uni-mainz.de,uni-mainz.de,zdv.net,rlp.net
-export https_proxy=http://webproxy.zdv.uni-mainz.de:3128
-export HTTPS_PROXY=http://webproxy.zdv.uni-mainz.de:3128
-export HTTP_PROXY=http://webproxy.zdv.uni-mainz.de:3128
-export http_proxy=http://webproxy.zdv.uni-mainz.de:3128
-export ALL_PROXY=http://webproxy.zdv.uni-mainz.de:3128
-
-export SSH_USER=liermann
-export SSH_FULLNAME="Johannes Liermann <liermann@uni-mainz.de>"
-export SSH_CONNECTION=10.94.7.76 49608 10.94.38.19 22
-export SSH_CLIENT_IP=10.94.7.76
-export SSH_CLIENT_KEY=SHA256:4sIoTlbgZ8sV5GH+QZLT2//m9qm6gQgDrRgs9o65KwA
-export SSH_CLIENT=10.94.7.76 49608 22
-export SSH_TTY=/dev/pts/0
+source /home/production/jgu_env.txt
 
 export THOR_SILENCE_DEPRECATION=true
 
