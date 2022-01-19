@@ -16,8 +16,8 @@ done
 # Assemble export statements
 
 for (( i=0; i<$loops; i++ )); do
-    for (( j=0; j<${length[i]}; j++)); do
-        envvar=$(env | grep $keywords[i] | sed -n "$j{p;q}")
+    for (( j=1; j=${length[i]}; j++)); do
+        envvar=$(env | grep $keywords[i] | sed -n "$j p")
         echo "EXPORT $envvar"
     done
     # echo ${keywords[i]}
