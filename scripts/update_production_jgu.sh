@@ -8,6 +8,8 @@ source /home/production/jgu_env.txt
 
 export THOR_SILENCE_DEPRECATION=true
 
+env # Show runtine environment for debugging
+
 set -euo pipefail
 
 ############################################
