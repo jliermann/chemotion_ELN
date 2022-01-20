@@ -4,7 +4,7 @@
 
 ## Version for installation at JGU Mainz. Execute with sudo from /home/production/
 
-source /home/production/jgu_env.txt
+source /home/production/jgu_env.sh
 
 export THOR_SILENCE_DEPRECATION=true
 
@@ -282,7 +282,7 @@ if [ "${PART_8:-}" ]; then
   sudo chown $PROD:$PROD $local_deploy_conf
 
   sharpi 'starting capistrano deploy task'
-  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --trace"
+  sudo -EH -u $PROD bash -c "env && cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --trace"
 
   green "done $description\n"
 else
