@@ -53,9 +53,9 @@ PANDOC_VERSION=2.10.1
 
 ### comment out any line below (PART_....) to skip the corresponding installation part#########
 
-PART_0='update OS'
-PART_1='deb dependencies installation'
-PART_1_1='deb specific dep version'
+#PART_0='update OS'
+#PART_1='deb dependencies installation'
+#PART_1_1='deb specific dep version'
 PART_4='update rvm and ruby'
 PART_5='update nvm and npm'
 PART_8='prepare first deploy and deploy application code'
@@ -193,11 +193,11 @@ description="installing rvm and ruby $RUBY_VERSION"
 
 if [ "${PART_4:-}" ]; then
   sharpi "$description"
-  if sudo -H -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
-    green 'gpg key installed'
-  else
-    sudo -H -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
-  fi
+#  if sudo -H -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
+#    green 'gpg key installed'
+#  else
+#    sudo -H -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+#  fi
   sudo -H -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
   sudo -H -u $PROD bash -c "source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
 

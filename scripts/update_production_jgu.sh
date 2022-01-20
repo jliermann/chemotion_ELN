@@ -4,9 +4,9 @@
 
 ## Version for installation at JGU Mainz. Execute with sudo from /home/production/
 
-source /home/production/jgu_env.sh
+# source /home/production/jgu_env.sh
 
-export THOR_SILENCE_DEPRECATION=true
+export THOR_SILENCE_DEPRECATION
 
 env # Show runtine environment for debugging
 
@@ -64,8 +64,8 @@ PANDOC_VERSION=2.10.1
 #PART_0='update OS'
 #PART_1='deb dependencies installation'
 #PART_1_1='deb specific dep version'
-#PART_4='update rvm and ruby'
-#PART_5='update nvm and npm'
+PART_4='update rvm and ruby'
+PART_5='update nvm and npm'
 PART_8='prepare first deploy and deploy application code'
 #PART_81='seed common ketcher templates'
 #PART_82='seed common reagents' 
