@@ -4,7 +4,7 @@
 
 # Define Variables
 
-keywords=("SSH" "http" "HTTP")
+keywords=("SSH" "proxy" "PROXY" "PATH")
 loops=${#keywords[@]}
 filename="/home/production/jgu_env.sh"
 
