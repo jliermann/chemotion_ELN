@@ -13,9 +13,10 @@ filename="/home/production/jgu_env.sh"
 for (( i=0; i<$loops; i++ )); do
     length=$(env | grep ${keywords[i]} | wc -l)  # Determine number of env for each keyword
     for (( j=0; j<$length; j++)); do
-        envname=$(env | grep ${keywords[i]} | sed -n "$(expr $j + 1) p" | sed  's|(\w+)=|\2 \1|')
-#        echo "EXPORT $envvar" >> $filename
-        echo $envname
+        envall=$(env | grep ${keywords[i]} | sed -n "$(expr $j + 1) p" ) # Get env line per line
+        envname=$(echo $envall | sed -e "s/\([^=]*\)=.*/\1/") # extract variable name
+        envval=$(echo $envall | sed -e "s/\([^=]*=\)//") # extract variable value
+        echo "export $envname=\"$envval\"" 2> $filename # create export statements with double quotes
     done
 done
 
