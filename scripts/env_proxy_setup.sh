@@ -16,7 +16,7 @@ for (( i=0; i<$loops; i++ )); do
         envall=$(env | grep ${keywords[i]} | sed -n "$(expr $j + 1) p" ) # Get env line per line
         envname=$(echo $envall | sed -e "s/\([^=]*\)=.*/\1/") # extract variable name
         envval=$(echo $envall | sed -e "s/\([^=]*=\)//") # extract variable value
-        echo "export $envname=\"$envval\"" 2> $filename # create export statements with double quotes
+        echo "export $envname=\"$envval\"" >> $filename # create export statements with double quotes
     done
 done
 
