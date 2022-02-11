@@ -57,8 +57,8 @@ PANDOC_VERSION=2.10.1
 
 ### comment out any line below (PART_....) to skip the corresponding installation part#########
 
-#PART_0='update OS'
-#PART_1='deb dependencies installation'
+PART_0='update OS'
+PART_1='deb dependencies installation'
 #PART_1_1='deb specific dep version'
 PART_4='update rvm and ruby'
 PART_5='update nvm and npm'
