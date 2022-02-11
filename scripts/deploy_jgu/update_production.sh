@@ -2,13 +2,9 @@
 
 ## This is a script to update a production chemotion_ELN server
 
-## Version for installation at JGU Mainz. Execute with sudo from /home/production/
-
-source /home/production/jgu_env.sh
-
-export THOR_SILENCE_DEPRECATION
-
-env # Show runtine environment for debugging
+## Version for deploy at JGU to workaround Capistrano deploy issues
+## Run this script as "production" using "sudo -E"
+## After installation, copy public/assets and public/packs from working installation.
 
 set -euo pipefail
 
@@ -38,7 +34,7 @@ APP_NAME=chemotion_ELN
 
 ## TMP DIR (has to be acccesible to install and PROD user)
 TMP_DIR=/tmp/${APP_NAME}_stage
-deploy_conf_example=$TMP_DIR/config/deploy/server.rb.example
+deploy_conf_example=./server.rb.example
 
 ## INSTALLATION DIRECTORY
 PROD_DIR=/var/www/${APP_NAME}
@@ -61,12 +57,12 @@ PANDOC_VERSION=2.10.1
 
 ### comment out any line below (PART_....) to skip the corresponding installation part#########
 
-#PART_0='update OS'
-#PART_1='deb dependencies installation'
+PART_0='update OS'
+PART_1='deb dependencies installation'
 #PART_1_1='deb specific dep version'
-#PART_4='update rvm and ruby'
+PART_4='update rvm and ruby'
 PART_5='update nvm and npm'
-#PART_8='prepare first deploy and deploy application code'
+PART_8='prepare first deploy and deploy application code'
 #PART_81='seed common ketcher templates'
 #PART_82='seed common reagents' 
 
@@ -201,16 +197,16 @@ description="installing rvm and ruby $RUBY_VERSION"
 
 if [ "${PART_4:-}" ]; then
   sharpi "$description"
-  # if sudo -EH -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
-  #   green 'gpg key installed'
-  # else
-  #   sudo -EH -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
-  # fi
-  sudo -EH -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
-  sudo -EH -u $PROD bash -c "source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
+#  if sudo -H -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
+#    green 'gpg key installed'
+#  else
+#    sudo -H -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+#  fi
+  sudo -H -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
+  sudo -H -u $PROD bash -c "source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
 
   # update RUBY_VERSION in application directory
-  sudo -EH -u $PROD bash -c "echo $RUBY_VERSION | tee $PROD_DIR/shared/.ruby-version"
+  sudo -H -u $PROD bash -c "echo $RUBY_VERSION | tee $PROD_DIR/shared/.ruby-version"
 
   # update RUBY_VERSION in boot script
   sudo sed -i.bak "s/ruby_version=.*/ruby_version=$RUBY_VERSION /" $PROD_HOME/boot-ELN.sh
@@ -231,9 +227,9 @@ description="installing nvm and node $NODE_VERSION"
 
 if [ "${PART_5:-}" ]; then
   sharpi "$description"
-  sudo -EH -u $PROD bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash"
-  sudo -EH -u $PROD bash -c "source $PROD_HOME/.nvm/nvm.sh &&  nvm install $NODE_VERSION"
-  sudo -EH -u $PROD bash -c "source $PROD_HOME/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g yarn"
+  sudo -H -u $PROD bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash"
+  sudo -H -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm install $NODE_VERSION"
+  sudo -H -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g yarn"
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -253,20 +249,20 @@ if [ "${PART_8:-}" ]; then
   rm_tmp
   rm_tmp_repo
 
-  sudo -EH -u $PROD bash -c "git clone --branch $BRANCH --bare $REPO $TMP_REPO_DIR"
-  sudo -EH -u $PROD bash -c "git clone --branch $BRANCH --depth 1 $TMP_REPO_DIR $TMP_DIR"
-  sudo -EH -u $PROD bash -c "cd $TMP_DIR &&  echo $RUBY_VERSION > .ruby-version"
-  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle config build.nokogiri --use-system-libraries"
-  # sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU --path $PROD_HOME/shared/bundle"
+  sudo -H -u $PROD bash -c "git clone --branch $BRANCH --bare $REPO $TMP_REPO_DIR"
+  sudo -H -u $PROD bash -c "git clone --branch $BRANCH --depth 1 $TMP_REPO_DIR $TMP_DIR"
+  sudo -H -u $PROD bash -c "cd $TMP_DIR &&  echo $RUBY_VERSION > .ruby-version"
+  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle config build.nokogiri --use-system-libraries"
+  # sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU --path $PROD_HOME/shared/bundle"
   yellow "Installing ruby gems\n"
-  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU "
+  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU "
   sharpi "prepare ssh keys"
   ## TODO check default directories for authorized_keys
   # grep AuthorizedKeysFile /etc/ssh/sshd_config
-  # sudo -EH -u $PROD bash -c  'rm -v $PROD_HOME/.ssh/known_hosts $PROD_HOME/.ssh/id_rsa $PROD_HOME/.ssh/id_rsa.pub'
-  sudo -EH -u $PROD bash -c  "ssh-keygen -t rsa -N '' -f $PROD_HOME/.ssh/id_rsa" || echo ' using existing keys'
+  # sudo -H -u $PROD bash -c  'rm -v $PROD_HOME/.ssh/known_hosts $PROD_HOME/.ssh/id_rsa $PROD_HOME/.ssh/id_rsa.pub'
+  sudo -H -u $PROD bash -c  "ssh-keygen -t rsa -N '' -f $PROD_HOME/.ssh/id_rsa" || echo ' using existing keys'
   localkey=$(sudo cat $PROD_HOME/.ssh/id_rsa.pub)
-  sudo -EH -u $PROD bash -c  "if [ -z \"\$(grep \"$localkey\" $PROD_HOME/.ssh/authorized_keys )\" ]; then echo $localkey | tee -a $PROD_HOME/.ssh/authorized_keys; fi;"
+  sudo -H -u $PROD bash -c  "if [ -z \"\$(grep \"$localkey\" $PROD_HOME/.ssh/authorized_keys )\" ]; then echo $localkey | tee -a $PROD_HOME/.ssh/authorized_keys; fi;"
 
   sharpi "prepare config"
   
@@ -282,7 +278,7 @@ if [ "${PART_8:-}" ]; then
   sudo chown $PROD:$PROD $local_deploy_conf
 
   sharpi 'starting capistrano deploy task'
-  sudo -EH -u $PROD bash -c "env && cd $TMP_DIR && source $PROD_HOME/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --trace"
+  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy --"
 
   green "done $description\n"
 else
@@ -296,10 +292,10 @@ description="seeding ketcher common_templates"
 ############################################
 if [ "${PART_81:-}" ]; then
   sharpi "$description"
-  src='source $PROD_HOME/.nvm/nvm.sh && source $PROD_HOME/.rvm/scripts/rvm '
-  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake ketcherails:import:common_templates"
+  src='source ~/.nvm/nvm.sh && source ~/.rvm/scripts/rvm '
+  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake ketcherails:import:common_templates"
   sudo rm -rf $PROD_DIR/current/public/images/ketcherails/icons/original/*
-  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rails r 'MakeKetcherailsSprites.perform_now'"
+  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rails r 'MakeKetcherailsSprites.perform_now'"
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -312,8 +308,8 @@ description="seeding common reagents "
 ############################################
 if [ "${PART_82:-}" ]; then
   sharpi "$description"
-  src='source $PROD_HOME/.nvm/nvm.sh && source $PROD_HOME/.rvm/scripts/rvm '
-  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake db:seed"
+  src='source ~/.nvm/nvm.sh && source ~/.rvm/scripts/rvm '
+  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake db:seed"
   green "done $description\n"
 else
   yellow "skip $description\n"
