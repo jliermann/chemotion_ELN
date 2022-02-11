@@ -137,11 +137,11 @@ rm_tmp_repo() {
 
 trap "rm_tmp; rm_tmp_repo; red 'An error has occured'" ERR
 
-if  [ "$VERSION_CODENAME" = "$V10" ] || [ "$VERSION_CODENAME" = "$V18" ] || [ "$VERSION_CODENAME" = "$V20" ]; then
-  sharpi "Running installation for $PRETTY_NAME "
-else
-  error "The installation for your distribution ($PRETTY_NAME) has not been tested"
-fi
+# if  [ "$VERSION_CODENAME" = "$V10" ] || [ "$VERSION_CODENAME" = "$V18" ] || [ "$VERSION_CODENAME" = "$V20" ]; then
+#   sharpi "Running installation for $PRETTY_NAME "
+# else
+#   error "The installation for your distribution ($PRETTY_NAME) has not been tested"
+# fi
 
 
 
