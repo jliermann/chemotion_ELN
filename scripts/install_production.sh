@@ -137,11 +137,11 @@ rm_tmp_repo() {
 
 trap "rm_tmp; rm_tmp_repo; red 'An error has occured'" ERR
 
-if  [ "$VERSION_CODENAME" = "$V10" ] || [ "$VERSION_CODENAME" = "$V18" ] || [ "$VERSION_CODENAME" = "$V20" ]; then
-  sharpi "Running installation for $PRETTY_NAME "
-else
-  error "The installation for your distribution ($PRETTY_NAME) has not been tested"
-fi
+# if  [ "$VERSION_CODENAME" = "$V10" ] || [ "$VERSION_CODENAME" = "$V18" ] || [ "$VERSION_CODENAME" = "$V20" ]; then
+#   sharpi "Running installation for $PRETTY_NAME "
+# else
+#   error "The installation for your distribution ($PRETTY_NAME) has not been tested"
+# fi
 
 
 
@@ -229,7 +229,7 @@ if [ "${PART_2:-}" ]; then
   ## https://www.phusionpassenger.com/library/install/nginx/install/oss/$VERSION_CODENAME/
 
   # sudo apt-get install -y dirmngr gnupg
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+  # sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
   sudo apt-get install -y nginx apt-transport-https ca-certificates
   sudo sh -c "echo deb https://oss-binaries.phusionpassenger.com/apt/passenger $VERSION_CODENAME main > /etc/apt/sources.list.d/passenger.list"
   sudo apt-get update
@@ -276,13 +276,13 @@ description="installing rvm and ruby $RUBY_VERSION"
 
 if [ "${PART_4:-}" ]; then
   sharpi "$description"
-  if sudo -H -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
-    green 'gpg key installed'
-  else
-    sudo -H -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
-  fi
-  sudo -H -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
-  sudo -H -u $PROD bash -c "source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
+  # if sudo -EH -u $PROD bash -c 'gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB' ; then
+  #   green 'gpg key installed'
+  # else
+  #   sudo -EH -u $PROD bash -c 'gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB'
+  # fi
+  sudo -EH -u $PROD bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=$RUBY_VERSION --auto-dotfiles"
+  sudo -EH -u $PROD bash -c "source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && gem install bundler -v $BUNDLER_VERSION "
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -296,10 +296,10 @@ description="installing nvm and node $NODE_VERSION"
 
 if [ "${PART_5:-}" ]; then
   sharpi "$description"
-  sudo -H -u $PROD bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash"
-  sudo -H -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm install $NODE_VERSION"
-#  sudo -H -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g npm@$NPM_VERSION"
-  sudo -H -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g yarn "
+  sudo -EH -u $PROD bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash"
+  sudo -EH -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm install $NODE_VERSION"
+#  sudo -EH -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g npm@$NPM_VERSION"
+  sudo -EH -u $PROD bash -c "source ~/.nvm/nvm.sh &&  nvm use $NODE_VERSION && npm install -g yarn "
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -426,20 +426,20 @@ if [ "${PART_8:-}" ]; then
   rm_tmp
   rm_tmp_repo
 
-  sudo -H -u $PROD bash -c "git clone --branch $BRANCH --depth 2 --bare $REPO $TMP_REPO_DIR"
-  sudo -H -u $PROD bash -c "git clone --branch $BRANCH --depth 1 $TMP_REPO_DIR $TMP_DIR"
-  sudo -H -u $PROD bash -c "cd $TMP_DIR &&  echo $RUBY_VERSION > .ruby-version"
-  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle config build.nokogiri --use-system-libraries"
-  # sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU --path $PROD_HOME/shared/bundle"
+  sudo -EH -u $PROD bash -c "git clone --branch $BRANCH --depth 2 --bare $REPO $TMP_REPO_DIR"
+  sudo -EH -u $PROD bash -c "git clone --branch $BRANCH --depth 1 $TMP_REPO_DIR $TMP_DIR"
+  sudo -EH -u $PROD bash -c "cd $TMP_DIR &&  echo $RUBY_VERSION > .ruby-version"
+  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle config build.nokogiri --use-system-libraries"
+  # sudo -EH -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU --path $PROD_HOME/shared/bundle"
   yellow "Installing ruby gems\n"
-  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU "
+  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && bundle install --jobs $NCPU "
   sharpi "prepare ssh keys"
   ## TODO check default directories for authorized_keys
   # grep AuthorizedKeysFile /etc/ssh/sshd_config
-  # sudo -H -u $PROD bash -c  'rm -v $PROD_HOME/.ssh/known_hosts $PROD_HOME/.ssh/id_rsa $PROD_HOME/.ssh/id_rsa.pub'
-  sudo -H -u $PROD bash -c  "ssh-keygen -t rsa -N '' -f $PROD_HOME/.ssh/id_rsa" || echo ' using existing keys'
+  # sudo -EH -u $PROD bash -c  'rm -v $PROD_HOME/.ssh/known_hosts $PROD_HOME/.ssh/id_rsa $PROD_HOME/.ssh/id_rsa.pub'
+  sudo -EH -u $PROD bash -c  "ssh-keygen -t rsa -N '' -f $PROD_HOME/.ssh/id_rsa" || echo ' using existing keys'
   localkey=$(sudo cat $PROD_HOME/.ssh/id_rsa.pub)
-  sudo -H -u $PROD bash -c  "if [ -z \"\$(grep \"$localkey\" $PROD_HOME/.ssh/authorized_keys )\" ]; then echo $localkey | tee -a $PROD_HOME/.ssh/authorized_keys; fi;"
+  sudo -EH -u $PROD bash -c  "if [ -z \"\$(grep \"$localkey\" $PROD_HOME/.ssh/authorized_keys )\" ]; then echo $localkey | tee -a $PROD_HOME/.ssh/authorized_keys; fi;"
 
 
   sharpi "prepare config"
@@ -456,7 +456,7 @@ if [ "${PART_8:-}" ]; then
   sudo chown $PROD:$PROD $local_deploy_conf
 
   sharpi 'starting capistrano deploy task'
-  sudo -H -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy"
+  sudo -EH -u $PROD bash -c "cd $TMP_DIR && source ~/.rvm/scripts/rvm && rvm use $RUBY_VERSION && cap local_deploy deploy"
 
   green "done $description\n"
 else
@@ -471,9 +471,9 @@ description="seeding ketcher common_templates"
 if [ "${PART_81:-}" ]; then
   sharpi "$description"
   src='source ~/.nvm/nvm.sh && source ~/.rvm/scripts/rvm '
-  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake ketcherails:import:common_templates"
+  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake ketcherails:import:common_templates"
   sudo rm -rf $PROD_DIR/current/public/images/ketcherails/icons/original/*
-  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rails r 'MakeKetcherailsSprites.perform_now'"
+  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rails r 'MakeKetcherailsSprites.perform_now'"
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -487,7 +487,7 @@ description="seeding common reagents "
 if [ "${PART_82:-}" ]; then
   sharpi "$description"
   src='source ~/.nvm/nvm.sh && source ~/.rvm/scripts/rvm '
-  sudo -H -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake db:seed"
+  sudo -EH -u $PROD bash -c "$src && cd $PROD_DIR/current && RAILS_ENV=production bundle exec rake db:seed"
   green "done $description\n"
 else
   yellow "skip $description\n"
@@ -524,7 +524,7 @@ if [ "${PART_9:-}" ]; then
     fi
   fi
 
-  yellow 'Do you want to start the application now? (y/n)' && read x && [[ "$x" == "y" ]] && sudo -H -u $PROD bash -c ". $PROD_HOME/boot-ELN.sh";
+  yellow 'Do you want to start the application now? (y/n)' && read x && [[ "$x" == "y" ]] && sudo -EH -u $PROD bash -c ". $PROD_HOME/boot-ELN.sh";
 
 sharpi "setting logrotate conf /etc/logrotate.d/${APP_NAME}"
   echo | sudo tee /etc/logrotate.d/$APP_NAME <<LOGR || true
