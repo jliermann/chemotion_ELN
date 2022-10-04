@@ -6,7 +6,7 @@ set :branch, 'development'
 
 # before 'deploy:migrate', 'deploy:backup'
 
-server server_addr, user: user, roles: %w{app web db}
+server server_addr, user: user, roles: %w{app db}
 puts %w(publickey)
 
 set :ssh_options, { forward_agent: true, auth_methods: %w(publickey) }
