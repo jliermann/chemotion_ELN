@@ -9,7 +9,7 @@ match="no instances running"
 
 echo $delayedOutput
 
-if [[ "$delayedOutput" == *"$match"* ]]; then
+if [[ "$delayedOutput" =~ (^| )$match($| ) ]]; then
     echo "Delayed processes stopped."
 else
     echo "Delayed jobs running."
