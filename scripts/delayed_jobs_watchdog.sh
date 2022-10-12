@@ -6,7 +6,7 @@ check="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job sta
 restart="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job restart"
 mail="liermann@uni-mainz.de"
 success="Restart of Chemotion delayed jobs on $(hostname) successful"
-fail="Restart of Chemotion delayed jobs on $(hostname) unsuccesful
+fail="Restart of Chemotion delayed jobs on $(hostname) unsuccesful"
 
 cd $prodDir
 
