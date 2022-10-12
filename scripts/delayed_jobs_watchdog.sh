@@ -24,10 +24,10 @@ match="no instances running"
 # echo $delayedOutput
 
 if [[ "$delayedOutput" == *"$match"* ]]; then
-    echo "Delayed processes stopped. Restarting now..." | echo "$(date): Restarting delayed jobs." >> $log
+    echo "$(date): Delayed processes stopped. Restarting now..." | tee $log
     eval $restart || failfunction()
     echo "$(date): $success" | mail -s "$success" $mail 
     echo "$(date): $success" > $log
 else
-    echo "Delayed jobs running."
+    echo "$(date): Delayed jobs running." | tee $tmp
 fi
