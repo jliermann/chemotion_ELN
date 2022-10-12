@@ -4,8 +4,7 @@ prodDir="/var/www/chemotion_ELN/current"
 
 cd $prodDir
 
-source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job status > /tmp/delay.out
-delayedOutput=$(cat "/tmp/delay.out")
+delayedOutput=$(source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job status 2>&1 | tee /dev/tty)
 match="no instances running"
 
 echo $delayedOutput
