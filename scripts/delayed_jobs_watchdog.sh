@@ -5,6 +5,8 @@ tmp="/tmp/delayed_out"
 check="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job status"
 restart="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job restart"
 mail="liermann@uni-mainz.de"
+success="Restart of Chemotion delayed jobs on $(hostname) successful"
+fail="Restart of Chemotion delayed jobs on $(hostname) unsuccesful
 
 cd $prodDir
 
@@ -16,8 +18,8 @@ match="no instances running"
 
 if [[ "$delayedOutput" == *"$match"* ]]; then
     echo "Delayed processes stopped. Restarting now..."
-    eval $restart || mail -s "Restart of Chemotion delayed jobs on $(hostname) unsuccesful" $mail && exit 1
-    mail -s "Restart of Chemotion delayed jobs on $(hostname) succesful" $mail
+    eval $restart || echo "$(date): $fail" | mail -s $fail $mail && exit 1
+    echo "$(date): $success" | mail -s $success $mail
 else
     echo "Delayed jobs running."
 fi
