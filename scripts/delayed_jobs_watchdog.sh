@@ -6,7 +6,7 @@ check="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job sta
 restart="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job restart"
 log="/var/log/delayed_jobs_watchdog"
 
-function failfunction{
+failfunction() {
     echo "$(date): $fail" | mail -s "$fail" $mail 
     echo "$(date): $fail" >> $log
     exit 1
