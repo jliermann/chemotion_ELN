@@ -4,6 +4,9 @@ prodDir="/var/www/chemotion_ELN/current"
 tmp="/tmp/delayed_out"
 check="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job status"
 restart="source ~/.profile && RAILS_ENV=production bundle exec bin/delayed_job restart"
+mail="liermann@uni-mainz.de"
+success="Restart of Chemotion delayed jobs on $(hostname) successful"
+fail="Restart of Chemotion delayed jobs on $(hostname) unsuccesful"
 log="/var/log/delayed_jobs_watchdog"
 
 failfunction() {
